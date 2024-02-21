@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethan's Profile App</title>
+  <style>
+    body {
+      text-align: center;
+      background-color: lightseagreen;
+      color: black;
+    }
+
+    .banner {
+      padding: 100px;
+    }
+
+    .logo {
+      width: 300px;
+      height: 200px;
+    }
+
+    table {
+      margin: 0 auto; /* Center the table horizontally */
+      text-align: left; /* Align table content to the left */
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <img src="ethangram-transparent.png" alt="EthanGram logo" class="logo">
+  </div>
+
+  <div id="user1"></div>
+  <div id="user2"></div>
+  </div>
+
+  <main>
+    <!-- Displayed profiles of two users go here -->
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyAqq9fv9cHzhhtiNTY1rmeBPnQ81wgZqFQ",
+      authDomain: "profileapp-7a207.firebaseapp.com",
+      databaseURL: "https://profileapp-7a207-default-rtdb.firebaseio.com",
+      projectId: "profileapp-7a207",
+      storageBucket: "profileapp-7a207.appspot.com",
+      messagingSenderId: "596726531544",
+      appId: "1:596726531544:web:db8627a68268c0907e9ead",
+      measurementId: "G-NVX0F75TQS"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    var database = getDatabase();
+
+    // Retrieve data for user with UID "ZhMjk3eplMR4Zy4hKOeDEnvmnXX2"
+    var user1Ref = ref(database, '1CynV3xirHUsvRZ0qBSzzWHnepJ3');
+    onValue(user1Ref, function(snapshot) {
+      var user1Data = snapshot.val();
+      displayUserData('user1', user1Data);
+    });
+
+    // Retrieve data for user with UID "lfg2WrkvEleQ40mpeQHoKGHNlC62"
+    var user2Ref = ref(database, 'cH1toL7mDvNkh5Hcos986yya7743');
+    onValue(user2Ref, function(snapshot) {
+      var user2Data = snapshot.val();
+      displayUserData('user2', user2Data);
+    });
+
+    function displayUserData(userId, userData) {
+      if (userData) {
+        document.getElementById(userId).innerHTML = `
+        <h2>${userData.name}</h2>
+        <img src="${userData.Image}" alt="${userId} Image" style="width: 200px;">
+        <table>
+        <tr>
+          <th>birthday</th>
+          <td>${userData.birthday}</td>
+        </tr>
+        <tr>
+          <th>favoritecolor</th>
+          <td>${userData.favoritecolor}</td>
+        </tr>
+        <tr>
+          <th>favoritebook</th>
+          <td>${userData.favoritebook}</td>
+        </tr>
+        </table>
+      `;
+      } else {
+        document.getElementById(userId).innerHTML = 'User data not available';
+      }
+    }
+  </script>
+</body>
+</html>
